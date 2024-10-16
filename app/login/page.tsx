@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { CiFacebook } from "react-icons/ci";
 import { CiTwitter } from "react-icons/ci";
@@ -6,6 +6,7 @@ import GLogo from '../../public/images/genezys_logo.jpg';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAppContext } from '@/context';
+import Input from '../components/Input';
 
 const Login = () => {
   const router = useRouter()
@@ -34,7 +35,7 @@ const Login = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = e.target;
     setState({ 
-      ...state, 
+      ...state,
       [name]: type === 'checkbox' ? checked : value 
     })
   }
@@ -55,12 +56,30 @@ const Login = () => {
               
               <div className='mt-2 flex flex-col'>
                 <label className='text-left text-md font-bold uppercase' htmlFor="name">Username</label>
-                <input name="name" value={state.name} onChange={(e) => handleChange(e)} autoComplete='off' placeholder='name' className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12' type="text" id='name' />
+                <Input
+                  type="text"
+                  name="name"
+                  value={state.name}
+                  autoComplete='off'
+                  handleChange={handleChange}
+                  placeholder='Username'
+                  className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12'
+                  id='name'
+                />
               </div>
 
               <div className='flex flex-col'>
                 <label className='text-left text-md font-bold uppercase' htmlFor="password">Password</label>
-                <input value={state.password} name="password" onChange={(e) => handleChange(e)} autoComplete='off' placeholder='Password'  className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12' type="password" />
+                <Input
+                  type="password"
+                  name="password"
+                  value={state.password}
+                  autoComplete='off'
+                  handleChange={handleChange}
+                  placeholder='Password'
+                  className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12'
+                  id='password'
+                />
               </div>
             </div>
             <button onClick={(e) => handleClick(e)} className='bg-[#FF4579] mt-8 w-full rounded-3xl text-white text-lg h-12'>Sign in</button>
