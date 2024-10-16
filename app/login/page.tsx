@@ -1,8 +1,21 @@
 import React from 'react'
+import Image from 'next/image'
 import { CiFacebook } from "react-icons/ci";
 import { CiTwitter } from "react-icons/ci";
+import GLogo from '../../public/images/genezys_logo.jpg';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Login = () => {
+  const router = useRouter()
+
+  const handleFormSubit = (e: any) => {
+    e.preventDefault();
+    if (true) {
+      router.push('/home')
+    }
+  }
+
   return (
     <>
       <div className='flex mt-60 text-black'>
@@ -14,7 +27,7 @@ const Login = () => {
               <CiTwitter />
             </div>
           </div>
-          <form>
+          <form onSubmit={handleFormSubit}>
             <div className='flex flex-col text-lg mt-6 gap-2 justify-items-start'>
               
               <div className='mt-2 flex flex-col'>
@@ -34,14 +47,25 @@ const Login = () => {
                 <label className='hover:cursor-pointer text-[#FF4579] text-xl ml-4 ' htmlFor="remember-me">Remember Me</label>
               </div>
               <div>
-                <p className='hover:cursor-pointer text-gray-400 text-xl'>
-                  Forget Passord
-                </p>
+                <Link href='/recuperar-senha'>
+                  <p className='hover:cursor-pointer text-gray-400 text-xl'>
+                    Forget Passord
+                  </p>
+                </Link>
               </div>
             </div>
           </form>
         </div>
-        <div className='bg-[#FF4579] flex-1 h-[30rem] p-8'>Welcome to Login</div>
+        <div className='flex flex-col justify-center items-center bg-[#FF4579] flex-1 h-[30rem] p-8 text-white '>
+          <div className='flex gap-4 items-end justify-center'>
+            <h2>Welcome to</h2>
+            <Image className='w-16' src={GLogo} alt="genezys-logo" />
+          </div>
+          <div className='mt-6 text-lg'>
+            <p className='underline'>Don't have an account?</p>
+          </div>
+            <button onClick={() => router.push('/cadastro')} className='mt-6 border border-white rounded-full w-40 h-16 text-xl'>Sign Up</button>
+        </div>
       </div>
     </>
   )
