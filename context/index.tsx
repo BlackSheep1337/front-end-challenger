@@ -48,22 +48,9 @@ const DEFAULT_VALUE = {
 };
 const AppContext = createContext<Context>(DEFAULT_VALUE);
 
-export function AppWrapper({ children }: {children: React.ReactNode}) {
-  const [state, setState] = useState({
-    isRemember:false,
-    name: '',
-    password: '',
-    email: '',
-    confirmPassword: '',
-    street: '',
-    district: '',
-    number: '',
-    city: '',
-    state: '',
-    cep: '',
-  });
+function AppWrapper({ children }: {children: React.ReactNode}) {
+  const [state, setState] = useState(DEFAULT_VALUE.state);
 
-  console.log(state);
   return (
     <AppContext.Provider value={{ state, setState }}>
       {children}
@@ -71,10 +58,12 @@ export function AppWrapper({ children }: {children: React.ReactNode}) {
   )
 }
 
-export function useAppContext() {
+const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {
     throw new Error("useAppContext must be used within an AppWrapper");
   }
   return context;
-}
+};
+
+export { AppWrapper, useAppContext };

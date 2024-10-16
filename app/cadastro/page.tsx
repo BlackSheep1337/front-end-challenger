@@ -6,11 +6,11 @@ const Cadastro = () => {
   const { setState, state } = useAppContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, type, checked, value } = e.target;
-    setState({ 
-      ...state,
-      [name]: type === 'checkbox' ? checked : value 
-    });
+    const { name, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   return (
@@ -24,7 +24,7 @@ const Cadastro = () => {
             name="name"
             id="name"
             className='border border-black'
-            value={state.name}
+            value={state.name || ''}
             handleChange={handleChange}
             autoComplete="off"
             placeholder="Nome completo"
@@ -38,7 +38,7 @@ const Cadastro = () => {
             name="password"
             id="password"
             className='border border-black'
-            value={state.password}
+            value={state.password || ''}
             handleChange={handleChange}
             autoComplete="off"
             placeholder="Senha"
@@ -66,7 +66,7 @@ const Cadastro = () => {
             name="email"
             id="email"
             className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12'
-            value={state.email}
+            value={state.email || ''}
             handleChange={handleChange}
             autoComplete='off'
             placeholder='E-mail'
@@ -156,6 +156,7 @@ const Cadastro = () => {
             placeholder="CEP"
           />
         </div>
+        <button>Registrar</button>
       </form>
     </div>
   );
