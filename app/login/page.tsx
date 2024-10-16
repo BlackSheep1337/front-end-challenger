@@ -5,9 +5,11 @@ import { CiTwitter } from "react-icons/ci";
 import GLogo from '../../public/images/genezys_logo.jpg';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAppContext } from '@/context';
 
 const Login = () => {
   const router = useRouter()
+  const { hello } = useAppContext();
 
   const handleFormSubit = (e: any) => {
     e.preventDefault();
