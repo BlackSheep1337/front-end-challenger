@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FormEventHandler, useEffect } from 'react'
 import Image from 'next/image'
 import { CiFacebook } from "react-icons/ci";
 import { CiTwitter } from "react-icons/ci";
@@ -9,13 +9,34 @@ import { useAppContext } from '@/context';
 
 const Login = () => {
   const router = useRouter()
-  const { hello } = useAppContext();
+  const { setState, state } = useAppContext();
 
-  const handleFormSubit = (e: any) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if (true) {
-      router.push('/home')
+    if (state.isRemember) {
+      localStorage.setItem('data', JSON.stringify(state));
     }
+    router.push('/home');
+  }
+
+  useEffect(() => {
+    localStorage.setItem('data', JSON.stringify(state))
+    
+    const storedState = localStorage.getItem('data');
+
+    const parsedState = JSON.parse(storedState || '');
+
+    if (parsedState.isRemember) {
+      setState(parsedState);
+    }
+  }, [state.isRemember]); 
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, checked, value } = e.target;
+    setState({ 
+      ...state, 
+      [name]: type === 'checkbox' ? checked : value 
+    })
   }
 
   return (
@@ -29,24 +50,24 @@ const Login = () => {
               <CiTwitter />
             </div>
           </div>
-          <form onSubmit={handleFormSubit}>
+          <form>
             <div className='flex flex-col text-lg mt-6 gap-2 justify-items-start'>
               
               <div className='mt-2 flex flex-col'>
-                <label className='text-left text-md font-bold uppercase' htmlFor="username">Username</label>
-                <input autoComplete='off' placeholder='Username' className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12' type="text" id='username' />
+                <label className='text-left text-md font-bold uppercase' htmlFor="name">Username</label>
+                <input name="name" value={state.name} onChange={(e) => handleChange(e)} autoComplete='off' placeholder='name' className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12' type="text" id='name' />
               </div>
 
               <div className='flex flex-col'>
-                <label className='text-left text-md font-bold uppercase' htmlFor="">Password</label>
-                <input autoComplete='off' placeholder='Password'  className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12' type="password" />
+                <label className='text-left text-md font-bold uppercase' htmlFor="password">Password</label>
+                <input value={state.password} name="password" onChange={(e) => handleChange(e)} autoComplete='off' placeholder='Password'  className='mt-2 pl-6 rounded-3xl bg-gray-100 w-full h-12' type="password" />
               </div>
             </div>
-            <button className='bg-[#FF4579] mt-8 w-full rounded-3xl text-white text-lg h-12'>Sign in</button>
+            <button onClick={(e) => handleClick(e)} className='bg-[#FF4579] mt-8 w-full rounded-3xl text-white text-lg h-12'>Sign in</button>
             <div className='flex justify-between items-end mt-2'>
               <div>
-                <input type="checkbox" id="remember-me" />
-                <label className='hover:cursor-pointer text-[#FF4579] text-xl ml-4 ' htmlFor="remember-me">Remember Me</label>
+                <input onChange={(e) => handleChange(e)} name='isRemember'  type="checkbox" id="remember-me" />
+                <label className='hover:cursor-pointer text-[#FF4579] text-xl ml-4' htmlFor="remember-me">Remember Me</label>
               </div>
               <div>
                 <Link href='/recuperar-senha'>
