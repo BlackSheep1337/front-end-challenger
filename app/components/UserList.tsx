@@ -7,6 +7,7 @@ interface IUserList {
   state: string;
   city: string;
   number: number;
+  id: number;
 }
 
 const UserList = ({ data }: { data: IUserList[] }) => {
@@ -39,9 +40,9 @@ const UserList = ({ data }: { data: IUserList[] }) => {
           </tr>
         </thead>
         <tbody>
-            {data.map(({name,email,street,state,city, number}) => {
+            {data.map(({name,email,street,state,city, number, id}) => {
               return (
-                <tr className='hover:bg-slate-200 hover:cursor-pointer transition'>
+                <tr key={id} className='hover:bg-slate-200 hover:cursor-pointer transition'>
                   <td>{name}</td>
                   <td>{email}</td>
                   <td>{street}</td>

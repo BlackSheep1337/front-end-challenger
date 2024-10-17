@@ -31,7 +31,7 @@ const Home = () => {
         <div className='flex justify-end'>
           <button className='text-[#FF4579] text-2xl' onClick={() => router.push('/')}>X</button>
         </div>
-        <div className='flex justify-between mt-4 text-blue-400 underline'>
+        <div className='flex justify-between mt-4 text-[#FF4579] underline'>
           <button onClick={() => setActiveComponent('userList')}>Lista de usuários</button>
           
           <button onClick={() => setActiveComponent('profile')}>Perfil</button>
