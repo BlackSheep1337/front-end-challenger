@@ -15,17 +15,15 @@ const Login = () => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (state.isRemember) {
-      localStorage.setItem('userData', JSON.stringify(state));
+      localStorage.setItem('userData', JSON.stringify([state]));
     }
     router.push('/home');
   }
 
   useEffect(() => {
-    localStorage.setItem('userData', JSON.stringify(state))
-    
-    const storedState = localStorage.getItem('userData');
+    localStorage.setItem('userData', JSON.stringify(state));
 
-    const parsedState = JSON.parse(storedState || '');
+    const parsedState = JSON.parse(localStorage.getItem('userData') || '[]');
 
     if (parsedState.isRemember) {
       setState(parsedState);

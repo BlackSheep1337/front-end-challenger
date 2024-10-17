@@ -1,18 +1,66 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import Input from '../components/Input';
 import { useAppContext } from '@/context';
 import { useRouter } from 'next/navigation';
+import Modal from '../components/Modal';
+import { validateCep, validateEmail, validatePassword } from '@/utils/validateData';
 
 const Cadastro = () => {
   const { setState, state } = useAppContext();
   const router = useRouter()
+  const [showModal, setShowModal] = useState(false);
+  const [modalPayLoad, setModalPayLoad] = useState({
+    message: '',
+    callback: () =>{},
+  });
 
   const handleClick = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('userData', JSON.stringify(state));
+    if (state.name === '' || state.password === '' || state.confirmPassword === '' || state.email === '' || state.cep === '') {
+      setModalPayLoad({
+        message: 'Por favor, preencha todos os campos obrigatórios.',
+        callback: closeModal
+      });
+      setShowModal(true);
+      return;
+    }
+
+    if (state.password !== state.confirmPassword) {
+      setModalPayLoad({
+        message: 'As senhas não coincidem. Por favor, tente novamente.',
+        callback: closeModal
+      });
+      setShowModal(true);
+      return;
+    }
+    if (!validateEmail(state.email)) {
+      setModalPayLoad({
+        message: 'E-mail inválido. Por favor, insira um e-mail válido.',
+        callback: closeModal
+      });
+      setShowModal(true);
+      return;
+    }
+    if (!validateCep(state.cep)) {
+      setModalPayLoad({
+        message: 'CEP inválido. O formato correto é XXXXX-XXX.',
+        callback: closeModal
+      });
+      setShowModal(true);
+      return;
+    }
+    if (!validatePassword(state.password)) {    
+      setModalPayLoad({
+        message: 'Senha inválida. A senha deve ter pelo menos 8 caracteres',
+        callback: closeModal
+      });
+      setShowModal(true);
+      return;
+    }
+
     setState({
-      isRemember: false,
+      isRemember: state.isRemember,
       name: '',
       password: '',
       confirmPassword: '',
@@ -24,7 +72,24 @@ const Cadastro = () => {
       state: '',
       cep: '',
     });
-    router.push('/');
+
+    let users = []
+
+    if (localStorage.hasOwnProperty('users')) {
+      users = JSON.parse(localStorage.getItem('users') || '[]');
+    }
+
+    const newId = users.length > 0 ? users[users.length - 1].id + 1 : 1;
+
+    users.push({ ...state, id: newId });
+
+    localStorage.setItem('users', JSON.stringify(users));
+
+    setModalPayLoad({
+      message: 'Conta criada com sucesso!',
+      callback: redirectHome,
+    });
+    setShowModal(true);
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +98,14 @@ const Cadastro = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const redirectHome = () => {
+    router.push('/');
+  }
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -167,6 +240,7 @@ const Cadastro = () => {
 
         <button onClick={handleClick} className='mt-4 bg-[#FF4579] text-white rounded-3xl py-2 px-4'>Registrar</button>
       </form>
+      {showModal && <Modal modalPayload={modalPayLoad} />}
     </div>
   );
 }
