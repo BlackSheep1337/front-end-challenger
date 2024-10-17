@@ -1,5 +1,7 @@
 "use client";
+import Cadastro from "./cadastro/page";
 import Login from "./login/page";
+import RecoverPassword from "./recuperar-senha/page";
 
 export default function Home() {
   return (
