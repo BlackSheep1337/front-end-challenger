@@ -101,6 +101,10 @@ const Cadastro = () => {
   };
 
   const redirectHome = () => {
+    /* (if (state.isValidated) {
+      router.push('/home');
+    }
+    */
     router.push('/');
   }
 
