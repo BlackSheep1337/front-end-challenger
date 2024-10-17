@@ -12,7 +12,6 @@ const Perfil = () => {
     callback: () =>{},
   });
 
-  // Função para atualizar o estado ao digitar
   function handleChange(e: ChangeEvent<HTMLInputElement>): void {
     const { name, value } = e.target;
     setState((prevState: any) => ({
@@ -78,7 +77,7 @@ const Perfil = () => {
       <div className='mt-2 flex flex-col'>
         <label className='text-left text-md font-bold uppercase' htmlFor="password">Senha</label>
         <Input
-          type="text"
+          type="password"
           name="password"
           value={state.password}
           autoComplete='off'

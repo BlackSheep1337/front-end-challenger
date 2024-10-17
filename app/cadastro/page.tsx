@@ -5,6 +5,7 @@ import { useAppContext } from '@/context';
 import { useRouter } from 'next/navigation';
 import Modal from '../components/Modal';
 import { validateCep, validateEmail, validatePassword } from '@/utils/validateData';
+import CloseButton from '../components/CloseButton';
 
 const Cadastro = () => {
   const { setState, state } = useAppContext();
@@ -114,6 +115,7 @@ const Cadastro = () => {
 
   return (
     <div className='bg-white max-w-lg mx-auto my-8 p-6 text-black rounded-lg shadow-md'>
+      <CloseButton route="" />
       <h1 className='text-5xl mb-4'>Crie sua conta</h1>
       <form className='flex flex-col'>
         <div className='mt-2 flex flex-col'>
